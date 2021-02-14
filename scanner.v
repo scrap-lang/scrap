@@ -4,41 +4,35 @@ module main
 // you gave me this struct, now what?
 //pub 
 struct Scanner {
-  tokens string
+  tokens ustring
   mut:
     pos int
 }
 
 //pub 
-fn byte_str(r byte) string {
-	return rune(r).str()
-}
-
-//pub 
-fn (mut scanner Scanner) next() string {
+fn (mut scanner Scanner) next() rune {
 	if scanner.pos >= scanner.tokens.len {
 		return 'nothin to see here'
 	}
-	thingy_that_is_one_character := scanner.tokens[scanner.pos]
+	
+	token := scanner.tokens[scanner.pos]
 	scanner.pos++
-
-	return byte_str(thingy_that_is_one_character)
+	return token
 }
 
-fn (mut scanner Scanner) prev() string {
-	return byte_str(scanner.tokens[scanner.pos - 1])
+fn (mut scanner Scanner) prev() rune {
+	return scanner.tokens[scanner.pos - 1]
 }
 
-fn (mut scanner Scanner) peek() string {
-	return byte_str(scanner.tokens[scanner.pos])
+fn (mut scanner Scanner) peek() rune {
+	return scanner.tokens[scanner.pos]
 }
 
 //pub 
-fn new_scanner(goddamnscrap string) Scanner {
-	mut scanner := Scanner{
-		tokens: goddamnscrap
+fn new_scanner(input string) Scanner {
+	return Scanner {
+		tokens: ustring(input)
 	}
-	return scanner
 }
 
 fn main() {
