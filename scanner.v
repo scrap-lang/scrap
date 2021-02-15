@@ -1,6 +1,5 @@
 module main
 
-
 // you gave me this struct, now what?
 //pub 
 struct Scanner {
@@ -10,22 +9,25 @@ struct Scanner {
 }
 
 //pub 
-fn (mut scanner Scanner) next() rune {
-	if scanner.pos >= scanner.tokens.len {
-		return 'nothin to see here'
+fn (mut scanner Scanner) next() ?rune {
+	token := scanner.tokens[scanner.pos] or {
+		return none
 	}
-	
-	token := scanner.tokens[scanner.pos]
+
 	scanner.pos++
 	return token
 }
 
-fn (mut scanner Scanner) prev() rune {
-	return scanner.tokens[scanner.pos - 1]
+fn (mut scanner Scanner) prev() ?rune {
+	return scanner.tokens[scanner.pos - 1] or {
+		none
+	}
 }
 
-fn (mut scanner Scanner) peek() rune {
-	return scanner.tokens[scanner.pos]
+fn (mut scanner Scanner) peek() ?rune {
+	return scanner.tokens[scanner.pos] or {
+		none
+	}
 }
 
 //pub 
