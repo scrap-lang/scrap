@@ -1,9 +1,8 @@
-let ins = 10
-let berr = "Hello World"
+let ins = "hello";
+let berr = "world";
 
-
-fn hello(text) {
-	print(text)
+fn hello(text -> string) {
+	print(text);
 }
 
-hello(ins + berr)
+hello(ins + " " + berr);
