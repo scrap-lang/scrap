@@ -1,42 +1,33 @@
 module main
 
 // you gave me this struct, now what?
-//pub 
 struct Scanner {
   tokens ustring
   mut:
     pos int
 }
 
-//pub 
-fn (mut scanner Scanner) next() ?rune {
-	token := scanner.tokens[scanner.pos] or {
-		return none
-	}
-
+fn (mut scanner Scanner) next() string {
+	token := scanner.tokens.at(scanner.pos) //or { return none }
 	scanner.pos++
 	return token
 }
 
-fn (mut scanner Scanner) prev() ?rune {
-	return scanner.tokens[scanner.pos - 1] or {
-		none
-	}
+fn (mut scanner Scanner) prev() string {
+	return scanner.tokens.at(scanner.pos - 1) //or { return none }
 }
 
-fn (mut scanner Scanner) peek() ?rune {
-	return scanner.tokens[scanner.pos] or {
-		none
-	}
+fn (mut scanner Scanner) peek() string {
+	return scanner.tokens.at(scanner.pos) //or { return none }
 }
 
-//pub 
 fn new_scanner(input string) Scanner {
 	return Scanner {
-		tokens: ustring(input)
+		tokens: input.ustring()
 	}
 }
 
+/*
 fn main() {
 	// oi mate
 
@@ -57,3 +48,4 @@ fn main() {
 	println(scanner.next())
 	
 }
+*/
