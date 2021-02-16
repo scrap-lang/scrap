@@ -7,17 +7,26 @@ struct Scanner {
     pos int
 }
 
-fn (mut scanner Scanner) next() string {
-	token := scanner.tokens.at(scanner.pos) //or { return none }
+fn (mut scanner Scanner) next() ?string {
 	scanner.pos++
+	if scanner.pos >= scanner.tokens.len {
+		return none
+	}
+	token := scanner.tokens.at(scanner.pos) //or { return none }
 	return token
 }
 
-fn (mut scanner Scanner) prev() string {
+fn (mut scanner Scanner) prev() ?string {
+	if scanner.pos > scanner.tokens.len {
+		return none
+	}
 	return scanner.tokens.at(scanner.pos - 1) //or { return none }
 }
 
-fn (mut scanner Scanner) peek() string {
+fn (mut scanner Scanner) peek() ?string {
+	if scanner.pos > scanner.tokens.len {
+		return none
+	}
 	return scanner.tokens.at(scanner.pos) //or { return none }
 }
 

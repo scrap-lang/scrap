@@ -14,3 +14,28 @@ Take a look at the "first" token outputted by the tokenizer, wow so magical.
     index: 0
 }]
 ```
+
+
+```v
+[Token{
+    kind: let
+    value: 'let'
+    line: 0
+    index: 3
+}, Token{
+    kind: name
+    value: 'foo'
+    line: 0
+    index: 7
+}, Token{
+    kind: assign
+    value: '='
+    line: 0
+    index: 8
+}, Token{
+    kind: number
+    value: '10'
+    line: 0
+    index: 12
+}]
+```

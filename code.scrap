@@ -1,0 +1,9 @@
+let ins = 10
+let berr = "Hello World"
+
+
+fn hello(text) {
+	print(text)
+}
+
+hello(ins + berr)
