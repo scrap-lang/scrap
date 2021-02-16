@@ -2,6 +2,7 @@ module main
 
 import regex
 
+// the things of importance
 enum TokenTypes {
 	let // let
 	string
@@ -9,8 +10,12 @@ enum TokenTypes {
 	name
 	assign
 	function
+	lp // (
+	rp // )
+	param // (value)
 }
 
+// one of these gets you one step closer to pain
 struct Token {
 	kind TokenTypes
 	value string
@@ -18,10 +23,12 @@ struct Token {
 	index int
 }
 
+// these are magical text strings used for matching text
 const name_query = r'[a-zA-Z_][a-zA-Z0-9_]*'
 const number_query = r'\d'
 const string_query = r'\".*?\"'
 
+// this makes pieces of pain
 fn tokenize(mut scanned Scanner) []Token {
 	mut out := []Token{}
 
@@ -36,7 +43,6 @@ fn tokenize(mut scanned Scanner) []Token {
 		// println(t_is_number)
 
 		if t_is_name == 0 {
-			name_pos := scanned.pos
 			mut name := t
 			for {
 				n := scanned.next() or { println('problem') break }
@@ -104,6 +110,13 @@ fn tokenize(mut scanned Scanner) []Token {
 			scanned.next() or { break }
 			continue
 		}
+
+		if t == '(' {
+			out << Token{kind: TokenTypes.lp, value: "(", line: 0, index: scanned.pos}
+			// stuff
+			continue
+		}
+
 		if t == ' ' {
 			continue
 		} else {
@@ -115,10 +128,15 @@ fn tokenize(mut scanned Scanner) []Token {
 }
 
 fn main() {
+	// the pain starts here for now
 	code := 'let foo = 10'
 
+	// this makes it possible to make pieces of pain
 	mut scanned := new_scanner(code)
+
+	// o
 	o := tokenize(mut scanned)
 	
+	// this tells me if the pieces of pain are correct
 	println(o)
 }
