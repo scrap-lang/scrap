@@ -29,6 +29,7 @@ fn tokenize(mut scaned Scanner) []Token {
 		t_is_name, t_name_end := re.match_string(t)
 
 		if t_is_name == 0 {
+			name_pos := scaned.pos
 			mut name := ""
 			for {
 				n := scaned.next()
@@ -43,7 +44,7 @@ fn tokenize(mut scaned Scanner) []Token {
 			match name {
 				'let' {
 					println('matched')
-					out << Token{kind: TokenTypes.let, value: "let", line: 0, index: 0}
+					out << Token{kind: TokenTypes.let, value: "let", line: 0, index: name_pos}
 					break
 				}
 				else {
