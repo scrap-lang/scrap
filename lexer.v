@@ -31,6 +31,8 @@ enum TokenKind {
 struct Token {
 	kind TokenKind
 	val string
+	line int
+	line_pos int
 }
 
 struct Query {
@@ -79,14 +81,14 @@ fn lex(code string) ?[]Token {
 			if start == -1 { continue }
 			
 			matched = true
-			tokens << Token { kind: query.kind, val: code[pos..(pos + end)] }
+			tokens << { 
+				kind: query.kind, 
+				val: code[pos..(pos + end)]
+				line: line
+				line_pos: line_pos
+			}
 			pos += end
 			line_pos += end
-
-			if query.kind == .smc {
-				line++
-				line_pos = 0
-			}
 		}
 
 		if !matched {
@@ -94,16 +96,20 @@ fn lex(code string) ?[]Token {
 			start, end := re.match_string(code[pos..])
 
 			if start == -1 {
-				println("
-Expected Whitespace but got
+				panic("[LEXER] Expected Whitespace but got
 `${term.red(code[pos..(pos + end + 1)])}`
 ${term.red(code[(pos - 10)..(pos + end + 10)])}
 \nOn line: $line, Position: ${line_pos}
 				")
-				exit(0)
+			}
+
+			if code[pos] == `\n` {
+				line++
+				line_pos = 0
 			}
 
 			pos += end
+			line_pos += end
 		}
 	}
 
