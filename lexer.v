@@ -7,6 +7,10 @@ enum TokenKind {
 	let
 	ident
 	eq
+	plus
+	sub
+	mult
+	div
 	int
 	float
 	string
@@ -28,6 +32,10 @@ const queries = [
 	Query { kind: .let, re: r"let" },
 	Query { kind: .ident, re: r"[a-z_][a-z\d_]*" },
 	Query { kind: .eq, re: r"=" },
+	Query { kind: .plus, re: r"+"},
+	Query { kind: .sub, re: r"-"},
+	Query { kind: .mult, re: r"\*"},
+	Query { kind: .div, re: r"/"},
 	Query { kind: .float, re: r"\d+\.\d+" },
 	Query { kind: .int, re: r"\d+" },
 	Query { kind: .string, re: r'"[^"]*"' },
