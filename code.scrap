@@ -2,8 +2,8 @@ let str = "hello";
 let num = 420 - 69;
 let flt = 420.69;
 
-fn hello(old -> string) {
-	let new = old;
+fn hello(name -> string) {
+	print("hello " + name);
 }
 
-let abc = "nice"
+hello("scrap");
