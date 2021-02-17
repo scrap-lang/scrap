@@ -43,7 +43,6 @@ struct Query {
 // order matters
 const queries = [
 	Query { kind: .let, re: r"let" },
-	Query { kind: .ident, re: r"[a-z_][a-z\d_]*" },
 	Query { kind: .eq, re: r"=" },
 	Query { kind: .plus, re: r"+"},
 	Query { kind: .mult, re: r"\*"},
@@ -60,6 +59,7 @@ const queries = [
 	Query { kind: .lcbr, re: r"{" },
 	Query { kind: .rcbr, re: r"}" },
 
+	Query { kind: .ident, re: r"[a-z_][a-z\d_]*" },
 	Query { kind: .sub, re: r"-"},
 
 	Query { kind: .smc, re: r";" }
