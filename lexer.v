@@ -1,5 +1,6 @@
 module main
 
+import term
 import os
 import regex
 
@@ -43,7 +44,6 @@ const queries = [
 	Query { kind: .ident, re: r"[a-z_][a-z\d_]*" },
 	Query { kind: .eq, re: r"=" },
 	Query { kind: .plus, re: r"+"},
-	Query { kind: .sub, re: r"-"},
 	Query { kind: .mult, re: r"\*"},
 	Query { kind: .div, re: r"/"},
 	Query { kind: .float, re: r"\d+\.\d+" },
@@ -58,6 +58,8 @@ const queries = [
 	Query { kind: .lcbr, re: r"{" },
 	Query { kind: .rcbr, re: r"}" },
 
+	Query { kind: .sub, re: r"-"},
+
 	Query { kind: .smc, re: r";" }
 ]
 
@@ -66,6 +68,7 @@ fn lex(code string) ?[]Token {
 	mut tokens := []Token{}
 	mut pos := 0
 	mut line := 0
+	mut line_pos := 0 // for the error
 
 	for pos < code.len {
 		mut matched := false
@@ -78,9 +81,11 @@ fn lex(code string) ?[]Token {
 			matched = true
 			tokens << Token { kind: query.kind, val: code[pos..(pos + end)] }
 			pos += end
+			line_pos += end
 
 			if query.kind == .smc {
 				line++
+				line_pos = 0
 			}
 		}
 
@@ -89,7 +94,13 @@ fn lex(code string) ?[]Token {
 			start, end := re.match_string(code[pos..])
 
 			if start == -1 {
-				panic("expected whitespace $line")
+				println("
+Expected Whitespace but got
+`${term.red(code[pos..(pos + end + 1)])}`
+${term.red(code[(pos - 10)..(pos + end + 10)])}
+\nOn line: $line, Position: ${line_pos}
+				")
+				exit(0)
 			}
 
 			pos += end
