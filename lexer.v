@@ -14,6 +14,16 @@ enum TokenKind {
 	int
 	float
 	string
+
+	// function tokens
+	fun
+	lp
+	arrow
+	cma
+	rp
+	lcbr
+	rcbr
+
 	smc
 }
 
@@ -39,6 +49,15 @@ const queries = [
 	Query { kind: .float, re: r"\d+\.\d+" },
 	Query { kind: .int, re: r"\d+" },
 	Query { kind: .string, re: r'"[^"]*"' },
+
+	Query { kind: .fun, re: r"fn" },
+	Query { kind: .lp, re: r"\("}
+	Query { kind: .arrow, re: r"->"},
+	Query { kind: .cma, re: r","},
+	Query { kind: .rp, re: r"\)" }
+	Query { kind: .lcbr, re: r"{" },
+	Query { kind: .rcbr, re: r"}" },
+
 	Query { kind: .smc, re: r";" }
 ]
 
@@ -46,6 +65,7 @@ fn lex(code string) ?[]Token {
 	// stuff
 	mut tokens := []Token{}
 	mut pos := 0
+	mut line := 0
 
 	for pos < code.len {
 		mut matched := false
@@ -57,8 +77,11 @@ fn lex(code string) ?[]Token {
 			
 			matched = true
 			tokens << Token { kind: query.kind, val: code[pos..(pos + end)] }
-			println(tokens[tokens.len - 1])
 			pos += end
+
+			if query.kind == .smc {
+				line++
+			}
 		}
 
 		if !matched {
@@ -66,7 +89,7 @@ fn lex(code string) ?[]Token {
 			start, end := re.match_string(code[pos..])
 
 			if start == -1 {
-				panic("expected whitespace")
+				panic("expected whitespace $line")
 			}
 
 			pos += end

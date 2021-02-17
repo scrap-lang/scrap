@@ -1,3 +1,7 @@
 let str = "hello";
-let num = 420 + 69
+let num = 420 + 69;
 let flt = 420.69;
+
+fn hello(old -> string) {
+	let new = old;
+}
